@@ -1,0 +1,73 @@
+{
+    "name": "Embedding_GRU",
+    "n_gpu": 1,
+
+    "arch": {
+        "type": "GRU_Base",
+        "args": {
+            "input_feature_size":100,
+            "hidden_size":512,
+            "predict_len":2,
+            "num_layers":2,
+            "dropout":0.1
+        }
+    },
+    "data_loader": {
+        "type": "dataLoader",
+        "args":{
+            "mode":"train",
+            "time_len":24,
+            "embed_path":"embed_50_no_l2.npy",
+            "feature_choice":"pm10",
+            "batch_size":128,
+            "num_workeres":4,
+            "shuffle":false
+        }
+    },
+    "valid_loader": {
+        "type": "dataLoader",
+        "args":{
+            "mode":"valid",
+            "time_len":24,
+            "embed_path":"embed_50_no_l2.npy",
+            "feature_choice":"pm10",
+            "batch_size":128,
+            "num_workeres":4,
+            "shuffle":false
+        }
+    },
+    "optimizer": {
+        "type": "SGD",
+        "args":{
+            "lr": 0.001,
+            "weight_decay": 5e-4
+        }
+    },
+    "loss": "mse_loss",
+    "metrics": [
+
+    ],
+    "lr_scheduler": {
+        "type": "ReduceLROnPlateau",
+        "args": {
+            "factor": 0.1,
+            "patience": 5,
+            "min_lr": 1e-06,
+            "verbose":true
+        }
+    },
+    "trainer": {
+        "epochs": 200,
+
+        "save_dir": "saved/",
+        "save_period": 5,
+        "verbosity": 2,
+        
+        "monitor": "min val_loss",
+        "early_stop": 50,
+        "l2_regularization":false,
+        "l2_lambda":0.1,
+
+        "tensorboard": true
+    }
+}
