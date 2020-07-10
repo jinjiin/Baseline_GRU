@@ -149,7 +149,7 @@ class Trainer(BaseTrainer):
                 output = self.model(data)
                 # print(output)
                 loss = self.loss(output, target)
-                
+
                 pm25_predict, pm10_predict = torch.chunk(output, 2, dim=1)
                 pm25_target, pm10_target = torch.chunk(target, 2, dim=1)
                 pm25_loss = self.loss(pm25_predict, pm25_target)
@@ -168,6 +168,7 @@ class Trainer(BaseTrainer):
             'val_pm25_loss': np.sqrt(total_pm25_loss / length),
             'val_pm10_loss': np.sqrt(total_pm10_loss / length)
         }
+
 
     def _progress(self, batch_idx):
         base = '[{}/{} ({:.0f}%)]'
